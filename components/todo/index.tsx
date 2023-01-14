@@ -8,11 +8,19 @@ import {
   Link,
   IconButton,
   Flex,
+  useColorMode,
 } from "@chakra-ui/react";
 import AddTask from "./addTask";
 import TaskList from "./tasks";
 import { task } from "types/todo";
-import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaInstagram,
+  FaFacebook,
+  FaSun,
+  FaMoon,
+} from "react-icons/fa";
 
 const Todo = () => {
   const toast = useToast();
@@ -21,7 +29,7 @@ const Todo = () => {
   const initialRender = useRef(true);
 
   useEffect(() => {
-    const tasks = JSON.parse(localStorage.getItem("tasks") as string);
+    const tasks = JSON.parse(localStorage.getItem("tasks") as string) || [];
     setTasks(tasks);
   }, []);
 
@@ -30,9 +38,7 @@ const Todo = () => {
       initialRender.current = false;
       return;
     }
-    if (typeof window !== "undefined") {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   const addTask = (task: task) => {
@@ -83,8 +89,18 @@ const Todo = () => {
     onClose();
   };
 
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <VStack p={4} minH="100vh" pb={20}>
+      <IconButton
+        icon={colorMode === "light" ? <FaSun /> : <FaMoon />}
+        isRound
+        size="md"
+        alignSelf="flex-end"
+        onClick={toggleColorMode}
+        aria-label="toogle-dark-mode"
+      />
+
       <Heading
         p="5"
         fontWeight="extrabold"
