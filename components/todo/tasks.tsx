@@ -22,7 +22,7 @@ const TaskList = ({
   deleteTaskAll,
   checkTask,
 }: tasks) => {
-  if (!tasks.length) {
+  if (!tasks?.length) {
     return (
       <>
         <Box maxW="80%">
