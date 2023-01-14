@@ -17,7 +17,7 @@ import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
 const Todo = () => {
   const toast = useToast();
   const [tasks, setTasks] = useState<task[]>(
-    () => JSON.parse(localStorage.getItem("tasks")) || []
+    () => JSON.parse(localStorage.getItem("tasks") as string) || []
   );
 
   useEffect(() => {
