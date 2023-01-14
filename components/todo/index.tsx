@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Heading,
   VStack,
@@ -16,13 +16,23 @@ import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
 
 const Todo = () => {
   const toast = useToast();
-  const [tasks, setTasks] = useState<task[]>(
-    () => JSON.parse(localStorage.getItem("tasks") as string) || []
-  );
+  const [tasks, setTasks] = useState<task[]>([]);
+
+  const initialRender = useRef(true);
 
   useEffect(() => {
-    console.log("Called tasks Effect");
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    const tasks = JSON.parse(localStorage.getItem("tasks") as string);
+    setTasks(tasks);
+  }, []);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
   }, [tasks]);
 
   const addTask = (task: task) => {
@@ -37,7 +47,6 @@ const Todo = () => {
   };
 
   const deleteTaskAll = () => {
-    console.log("Called");
     setTasks([]);
   };
 
